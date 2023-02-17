@@ -50,6 +50,11 @@ cd playwright-express-mark\
 yarn playwright test --headed
 ```
 
+Executando os testes no modo debug (Fantástico)
+```sh
+cd playwright-express-mark\
+yarn playwright test --debug
+```
 
 ## 📝 License
 
