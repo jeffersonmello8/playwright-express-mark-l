@@ -1,9 +1,9 @@
 # Usando Playwright com Typescript para testes e2e de uma Web App
 
 <h1 align="left">
-    <img src=".github/images/playwright-logo.svg" width="300px">
-    <img src=".github/images/playwright-logo.svg" width="300px">
-    <img src=".github/images/playwright-logo.svg" width="300px">
+    <img src=".github/images/playwright-logo.svg" width="200px">
+    <img src=".github/images/playwright-logo.svg" width="200px">
+    <img src=".github/images/playwright-logo.svg" width="200px">
 </h1>
 
 ## 🚀 Tecnologias
