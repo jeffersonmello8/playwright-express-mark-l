@@ -1,4 +1,4 @@
-export interface taskModel {
+export interface TaskModel {
     name: string,
     is_done: boolean
 }

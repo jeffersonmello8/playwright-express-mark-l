@@ -1,11 +1,13 @@
 import { test, expect } from '@playwright/test'
 import { faker } from '@faker-js/faker'
 
-import { taskModel } from './fixtures/task.model'
+import { deleteTaskByHelper, postTask } from './support/helpers'
+
+import { TaskModel } from './fixtures/task.model'
 
 test('deve poder cadastrar uma nova tarefa usando dados dinâmicos', async ({ page }) => {
 
-    const task: taskModel = {
+    const task: TaskModel = {
         name: `Traduzir a música ${faker.music.songName()}`,
         is_done: false
     }
@@ -23,12 +25,12 @@ test('deve poder cadastrar uma nova tarefa usando dados dinâmicos', async ({ pa
 
 test('deve poder cadastrar uma nova tarefa usando massa de dados fixa', async ({ page, request }) => {
 
-    const task: taskModel = {
+    const task: TaskModel = {
         name: 'Ler um livro de Javascript',
         is_done: false
     }
 
-    await request.delete(`http://localhost:3333/helper/tasks/${task.name}`)
+    deleteTaskByHelper(request, task.name)
 
     await page.goto('http://localhost:3000')
 
@@ -43,16 +45,14 @@ test('deve poder cadastrar uma nova tarefa usando massa de dados fixa', async ({
 
 test('não deve permitir cadastro de tarefa duplicada', async ({ page, request }) => {
 
-    const task: taskModel = {
+    const task: TaskModel = {
         name: 'Comprar pão carioquinha',
         is_done: false
     }
 
-    var resp = await request.delete(`http://localhost:3333/helper/tasks/${task.name}`)
-    expect(resp.ok()).toBeTruthy()
-
-    var resp = await request.post('http://localhost:3333/tasks/', { data: task })
-    expect(resp.ok()).toBeTruthy()
+    deleteTaskByHelper(request, task.name)
+    
+    postTask(request, task)
 
     await page.goto('http://localhost:3000')
 
