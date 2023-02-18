@@ -1,5 +1,9 @@
 # Usando Playwright com Typescript para testes e2e de uma Web App
 
+<h1 align="left">
+    <img src=".github/images/playwright-logo.svg" width="300px">
+</h1>
+
 ## 🚀 Tecnologias
 
 - [Node.js] - plataforma de desenvolvimento
