@@ -1,6 +1,7 @@
-import { test, expect } from '@playwright/test'
+import { test } from '@playwright/test'
 import { faker } from '@faker-js/faker'
 
+import { TasksPage } from './support/pages/tasks/'
 import { deleteTaskByHelper, postTask } from './support/helpers'
 
 import { TaskModel } from './fixtures/task.model'
@@ -12,15 +13,11 @@ test('deve poder cadastrar uma nova tarefa usando dados dinâmicos', async ({ pa
         is_done: false
     }
 
-    await page.goto('http://localhost:3000')
+    const tasksPage: TasksPage = new TasksPage(page)
 
-    const inputTaskName = page.locator('input[class*=InputNewTask]')
-    await inputTaskName.fill(task.name)
-
-    await inputTaskName.press('Enter')
-
-    const target = page.locator(`css=.task-item p >> text=${task.name}`)
-    await expect(target).toBeVisible()
+    await tasksPage.go()
+    await tasksPage.createSubmitingForm(task)
+    await tasksPage.shouldHaveText(task.name)
 })
 
 test('deve poder cadastrar uma nova tarefa usando massa de dados fixa', async ({ page, request }) => {
@@ -32,15 +29,11 @@ test('deve poder cadastrar uma nova tarefa usando massa de dados fixa', async ({
 
     deleteTaskByHelper(request, task.name)
 
-    await page.goto('http://localhost:3000')
+    const tasksPage: TasksPage = new TasksPage(page)
 
-    const inputTaskName = page.locator('input[class*=InputNewTask]')
-    await inputTaskName.fill(task.name)
-
-    await page.click('css=button >> text=Create')
-
-    const target = page.locator(`css=.task-item p >> text=${task.name}`)
-    await expect(target).toBeVisible()
+    await tasksPage.go()
+    await tasksPage.createPressingButton(task)
+    await tasksPage.shouldHaveText(task.name)
 })
 
 test('não deve permitir cadastro de tarefa duplicada', async ({ page, request }) => {
@@ -54,13 +47,9 @@ test('não deve permitir cadastro de tarefa duplicada', async ({ page, request }
     
     postTask(request, task)
 
-    await page.goto('http://localhost:3000')
+    const tasksPage: TasksPage = new TasksPage(page)
 
-    const inputTaskName = page.locator('input[class*=InputNewTask]')
-    await inputTaskName.fill(task.name)
-
-    await page.click('css=button >> text=Create')
-
-    const target = page.locator('.swal2-html-container')
-    await expect(target).toHaveText('Task already exists!')
+    await tasksPage.go()
+    await tasksPage.createPressingButton(task)
+    await tasksPage.alertHaveText('Task already exists!')
 })
