@@ -15,7 +15,7 @@ export class TasksPage {
         await this.page.goto('http://localhost:3000')
     }
 
-    async putTaskName(task: TaskModel){
+    async putTaskName(task: TaskModel) {
         const inputTaskName = this.inputTaskName
         await inputTaskName.fill(task.name)
 
@@ -28,9 +28,14 @@ export class TasksPage {
         await this.page.click('css=button >> text=Create')
     }
 
+    async toogle(taskName: string) {
+        const target = this.page.locator(`xpath=//p[text()="${taskName}"]/../button[contains(@class, "Toggle")]`)
+        await target.click()
+    }
+
     async createSubmitingForm(task: TaskModel) {
         const inputTaskName = await this.putTaskName(task)
-        
+
         await inputTaskName.press('Enter')
     }
 
@@ -42,5 +47,10 @@ export class TasksPage {
     async alertHaveText(text: string) {
         const target = this.page.locator('.swal2-html-container')
         await expect(target).toHaveText(text)
+    }
+
+    async shouldBeDone(taskName: string) {
+        const target = this.page.getByText(taskName)
+        await expect(target).toHaveCSS('text-decoration-line', 'line-through')
     }
 }
