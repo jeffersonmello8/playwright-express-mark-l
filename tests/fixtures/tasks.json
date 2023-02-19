@@ -14,5 +14,9 @@
     "update": {
         "name": "Pagar a fatura do cartão",
         "is_done": false
+    },
+    "delete": {
+        "name": "Estudar Java",
+        "is_done": false
     }
 }

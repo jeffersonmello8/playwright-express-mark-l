@@ -33,6 +33,12 @@ export class TasksPage {
         await target.click()
     }
 
+    async remove(taskName: string) {
+        const target = this.page.locator(`xpath=//p[text()="${taskName}"]/../button[contains(@class, "Delete")]`)
+        await target.click()
+    }
+
+
     async createSubmitingForm(task: TaskModel) {
         const inputTaskName = await this.putTaskName(task)
 
@@ -42,6 +48,11 @@ export class TasksPage {
     async shouldHaveText(taskName: string) {
         const target = this.page.locator(`css=.task-item p >> text=${taskName}`)
         await expect(target).toBeVisible()
+    }
+
+    async shouldNotExists(taskName: string) {
+        const target = this.page.locator(`css=.task-item p >> text=${taskName}`)
+        await expect(target).not.toBeVisible()
     }
 
     async alertHaveText(text: string) {
