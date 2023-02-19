@@ -16,6 +16,7 @@ test.describe('testes de cadastro', () => {
 
         await tasksPage.go()
         await tasksPage.createSubmitingForm(task)
+        
         await tasksPage.shouldHaveText(task.name)
     })
 
@@ -28,6 +29,7 @@ test.describe('testes de cadastro', () => {
 
         await tasksPage.go()
         await tasksPage.createPressingButton(task)
+
         await tasksPage.shouldHaveText(task.name)
     })
 
@@ -41,6 +43,7 @@ test.describe('testes de cadastro', () => {
 
         await tasksPage.go()
         await tasksPage.createPressingButton(task)
+
         await tasksPage.alertHaveText('Task already exists!')
     })
 
@@ -75,7 +78,7 @@ test.describe('testes de atualização', () => {
     })
 })
 
-test.describe.only('exclusão de tarefas', () => {
+test.describe('exclusão de tarefas', () => {
     test('deve excluir uma tarefa', async ({ page, request }) => {
         const task = dataTest.delete as TaskModel
 
