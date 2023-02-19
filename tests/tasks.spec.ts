@@ -5,13 +5,11 @@ import { TasksPage } from './support/pages/tasks/'
 import { deleteTaskByHelper, postTask } from './support/helpers'
 
 import { TaskModel } from './fixtures/task.model'
+import dataTest from './fixtures/tasks.json'
 
 test('deve poder cadastrar uma nova tarefa usando dados dinâmicos', async ({ page }) => {
-
-    const task: TaskModel = {
-        name: `Traduzir a música ${faker.music.songName()}`,
-        is_done: false
-    }
+    const task = dataTest.success as TaskModel
+    task.name = `Traduzir a música ${faker.music.songName()}`
 
     const tasksPage: TasksPage = new TasksPage(page)
 
@@ -21,12 +19,8 @@ test('deve poder cadastrar uma nova tarefa usando dados dinâmicos', async ({ pa
 })
 
 test('deve poder cadastrar uma nova tarefa usando massa de dados fixa', async ({ page, request }) => {
-
-    const task: TaskModel = {
-        name: 'Ler um livro de Javascript',
-        is_done: false
-    }
-
+    const task = dataTest.success as TaskModel
+    
     deleteTaskByHelper(request, task.name)
 
     const tasksPage: TasksPage = new TasksPage(page)
@@ -38,10 +32,7 @@ test('deve poder cadastrar uma nova tarefa usando massa de dados fixa', async ({
 
 test('não deve permitir cadastro de tarefa duplicada', async ({ page, request }) => {
 
-    const task: TaskModel = {
-        name: 'Comprar pão carioquinha',
-        is_done: false
-    }
+    const task = dataTest.duplicate as TaskModel
 
     deleteTaskByHelper(request, task.name)
 
@@ -54,11 +45,8 @@ test('não deve permitir cadastro de tarefa duplicada', async ({ page, request }
     await tasksPage.alertHaveText('Task already exists!')
 })
 
-test.only('campo nome é obrigatório', async ({ page }) => {
-    const task: TaskModel = {
-        name: '',
-        is_done: false
-    }
+test('campo nome é obrigatório', async ({ page }) => {
+    const task = dataTest.required as TaskModel
 
     const tasksPage: TasksPage = new TasksPage(page)
 
