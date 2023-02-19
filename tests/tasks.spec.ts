@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { faker } from '@faker-js/faker'
 
 import { TasksPage } from './support/pages/tasks/'
@@ -44,7 +44,7 @@ test('não deve permitir cadastro de tarefa duplicada', async ({ page, request }
     }
 
     deleteTaskByHelper(request, task.name)
-    
+
     postTask(request, task)
 
     const tasksPage: TasksPage = new TasksPage(page)
@@ -52,4 +52,21 @@ test('não deve permitir cadastro de tarefa duplicada', async ({ page, request }
     await tasksPage.go()
     await tasksPage.createPressingButton(task)
     await tasksPage.alertHaveText('Task already exists!')
+})
+
+test.only('campo nome é obrigatório', async ({ page }) => {
+    const task: TaskModel = {
+        name: '',
+        is_done: false
+    }
+
+    const tasksPage: TasksPage = new TasksPage(page)
+
+    await tasksPage.go()
+    await tasksPage.createPressingButton(task)
+
+    // converte o elemento para um objeto HTML para ter acesso a mensagem de validação que o browser exibe
+    const validationMessage = await tasksPage.inputTaskName.evaluate(e => (e as HTMLInputElement).validationMessage)
+    
+    expect(validationMessage).toEqual('This is a required field')
 })
